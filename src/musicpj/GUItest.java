@@ -27,7 +27,6 @@ public class GUItest extends javax.swing.JFrame {
         vtHeader.add("Singer");
         vtHeader.add("Artist");
         initComponents();
-        
         runApp app = new runApp();
         String query = "Nơi này có anh";
         JsonArray listSong = app.getSongDataFromAPI(query);
@@ -142,7 +141,6 @@ public class GUItest extends javax.swing.JFrame {
 
     private void tbListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbListMouseClicked
         // TODO add your handling code here:
-
         int index = tbList.getSelectedRow();
         System.out.println(this.songSelected(index));
     }//GEN-LAST:event_tbListMouseClicked

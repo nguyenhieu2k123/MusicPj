@@ -20,14 +20,6 @@ public class runApp {
                 .asString();
         String infString = response.getBody();
         JsonArray result = new JsonParser().parse(infString).getAsJsonArray();
-//        JsonArray listSong = new JsonArray();
-//        for(int i = 0; i < result.size(); i++){
-//            JsonObject findSong = result.get(i).getAsJsonObject();
-//            JsonObject heading = findSong.get("heading").getAsJsonObject();
-////            if(query.equalsIgnoreCase(heading.get("title").getAsString())) {
-//                listSong.add(findSong);
-////            }
-//        }
         return result;
     }
 
@@ -51,9 +43,5 @@ public class runApp {
         for(int i = 0; i < resultList.size(); i++){
             System.out.println(resultList.get(i));
         }
-//        JsonArray data = app.getLyricsDataFromAPI(id);
-//        for(int i = 0; i < data.size(); i++){
-//            System.out.println(data.get(i).getAsString());
-//        }
     }
 }
