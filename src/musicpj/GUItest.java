@@ -20,13 +20,12 @@ public class GUItest extends javax.swing.JFrame {
      */
     Vector vtHeader = new Vector();
     Vector vtData = new Vector();
-    
-    public GUItest() {
+    public void displaySongData(){
         vtHeader.add("Id");
         vtHeader.add("Name");
         vtHeader.add("Singer");
         vtHeader.add("Artist");
-        initComponents();
+        
         runApp app = new runApp();
         String query = "Nơi này có anh";
         JsonArray listSong = app.getSongDataFromAPI(query);
@@ -45,6 +44,10 @@ public class GUItest extends javax.swing.JFrame {
             tbList.setModel(new DefaultTableModel(vtData,vtHeader));
         }   
     }
+    public GUItest() {
+//        displaySongData();
+initComponents();
+    }
     public String songSelected(int index){
         Vector select = (Vector) vtData.get(index);
         String id = (String) select.get(0);
@@ -59,25 +62,34 @@ public class GUItest extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jEditorPane1 = new javax.swing.JEditorPane();
-        btnSong = new javax.swing.JButton();
-        btnSinger = new javax.swing.JButton();
+        btnFindSinger = new javax.swing.JButton();
+        btnFindSong = new javax.swing.JButton();
         jTextField1 = new javax.swing.JTextField();
-        btnSearch = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tbList = new javax.swing.JTable();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(255, 51, 51));
 
-        jScrollPane1.setViewportView(jEditorPane1);
+        btnFindSinger.setText("Find Singer");
+        btnFindSinger.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnFindSingerMouseClicked(evt);
+            }
+        });
 
-        btnSong.setText("Bài hát");
+        btnFindSong.setText("Find Song");
+        btnFindSong.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFindSongActionPerformed(evt);
+            }
+        });
 
-        btnSinger.setText("Ca sĩ");
-
-        btnSearch.setText("Search");
+        jScrollPane2.setBackground(new java.awt.Color(255, 153, 153));
+        jScrollPane2.setForeground(new java.awt.Color(255, 51, 51));
 
         tbList.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -102,7 +114,22 @@ public class GUItest extends javax.swing.JFrame {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 411, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 411, Short.MAX_VALUE)
+        );
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fortune_god.jpeg"))); // NOI18N
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -110,17 +137,14 @@ public class GUItest extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnSong, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnSinger, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(26, 26, 26)
+                .addComponent(btnFindSinger, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 71, Short.MAX_VALUE)
+                .addComponent(btnFindSong, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(39, 39, 39))
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
@@ -130,19 +154,28 @@ public class GUItest extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(66, 66, 66)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnSong, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnSinger, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(btnFindSinger, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnFindSong, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnFindSongActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFindSongActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnFindSongActionPerformed
+
+    private void btnFindSingerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnFindSingerMouseClicked
+        // TODO add your handling code here:
+        System.out.println("asdads");
+        displaySongData();
+        
+        
+    }//GEN-LAST:event_btnFindSingerMouseClicked
 
     private void tbListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbListMouseClicked
         // TODO add your handling code here:
@@ -187,12 +220,11 @@ public class GUItest extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnSearch;
-    private javax.swing.JButton btnSinger;
-    private javax.swing.JButton btnSong;
-    private javax.swing.JEditorPane jEditorPane1;
+    private javax.swing.JButton btnFindSinger;
+    private javax.swing.JButton btnFindSong;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTable tbList;

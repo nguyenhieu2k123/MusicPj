@@ -13,108 +13,100 @@ import java.net.*;
 
 // Server class
 class Server {
-	public static void main(String[] args)
-	{
-		ServerSocket server = null;
 
-		try {
+    public static void main(String[] args) {
+        ServerSocket server = null;
 
-			// server is listening on port 1234
-			server = new ServerSocket(1234);
-			server.setReuseAddress(true);
+        try {
 
-			// running infinite loop for getting
-			// client request
-			while (true) {
+            // server is listening on port 1234
+            server = new ServerSocket(1234);
+            server.setReuseAddress(true);
 
-				// socket object to receive incoming client
-				// requests
-				Socket client = server.accept();
+            // running infinite loop for getting
+            // client request
+            while (true) {
 
-				// Displaying that new client is connected
-				// to server
-				System.out.println("New client connected"
-								+ client.getInetAddress()
-										.getHostAddress());
+                // socket object to receive incoming client
+                // requests
+                Socket client = server.accept();
 
-				// create a new thread object
-				ClientHandler clientSock
-					= new ClientHandler(client);
+                // Displaying that new client is connected
+                // to server
+                System.out.println("New client connected"
+                        + client.getInetAddress()
+                                .getHostAddress());
 
-				// This thread will handle the client
-				// separately
-				new Thread(clientSock).start();
-			}
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-		}
-		finally {
-			if (server != null) {
-				try {
-					server.close();
-				}
-				catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
+                // create a new thread object
+                ClientHandler clientSock
+                        = new ClientHandler(client);
 
-	// ClientHandler class
-	private static class ClientHandler implements Runnable {
-		private final Socket clientSocket;
+                // This thread will handle the client
+                // separately
+                new Thread(clientSock).start();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (server != null) {
+                try {
+                    server.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 
-		// Constructor
-		public ClientHandler(Socket socket)
-		{
-			this.clientSocket = socket;
-		}
+    // ClientHandler class
+    private static class ClientHandler implements Runnable {
 
-		public void run()
-		{
-			PrintWriter out = null;
-			BufferedReader in = null;
-			try {
-					
-				// get the outputstream of client
-				out = new PrintWriter(
-					clientSocket.getOutputStream(), true);
+        private final Socket clientSocket;
 
-				// get the inputstream of client
-				in = new BufferedReader(
-					new InputStreamReader(
-						clientSocket.getInputStream()));
+        // Constructor
+        public ClientHandler(Socket socket) {
+            this.clientSocket = socket;
+        }
 
-				String line;
-				while ((line = in.readLine()) != null) {
+        public void run() {
+            PrintWriter out = null;
+            BufferedReader in = null;
+            try {
 
-					// writing the received message from
-					// client
-					System.out.printf(
-						" Sent from the client: %s\n",
-						line);
-					out.println(line);
-				}
-			}
-			catch (IOException e) {
-				e.printStackTrace();
-			}
-			finally {
-				try {
-					if (out != null) {
-						out.close();
-					}
-					if (in != null) {
-						in.close();
-						clientSocket.close();
-					}
-				}
-				catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
+                // get the outputstream of client
+                out = new PrintWriter(
+                        clientSocket.getOutputStream(), true);
+
+                // get the inputstream of client
+                in = new BufferedReader(
+                        new InputStreamReader(
+                                clientSocket.getInputStream()));
+
+                String line;
+                while ((line = in.readLine()) != null) {
+
+                    // writing the received message from
+                    // client
+                    System.out.printf(
+                            " Sent from the client: %s\n",
+                            line);
+                    out.println(line);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    if (out != null) {
+                        out.close();
+                    }
+                    if (in != null) {
+                        in.close();
+                        clientSocket.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 }
-
