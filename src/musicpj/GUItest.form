@@ -27,13 +27,13 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jScrollPane1" min="-2" pref="194" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Component id="jButton1" min="-2" pref="116" max="-2" attributes="0"/>
+              <Component id="btnSong" min="-2" pref="116" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jButton2" min="-2" pref="114" max="-2" attributes="0"/>
+              <Component id="btnSinger" min="-2" pref="114" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jTextField1" min="-2" pref="357" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jButton3" pref="142" max="32767" attributes="0"/>
+              <Component id="btnSearch" pref="142" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
           <Component id="jPanel1" alignment="0" max="32767" attributes="0"/>
@@ -46,10 +46,10 @@
                   <Group type="102" attributes="0">
                       <EmptySpace min="-2" pref="66" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jButton1" alignment="3" min="-2" pref="59" max="-2" attributes="0"/>
-                          <Component id="jButton2" alignment="3" min="-2" pref="59" max="-2" attributes="0"/>
+                          <Component id="btnSong" alignment="3" min="-2" pref="59" max="-2" attributes="0"/>
+                          <Component id="btnSinger" alignment="3" min="-2" pref="59" max="-2" attributes="0"/>
                           <Component id="jTextField1" alignment="3" min="-2" pref="59" max="-2" attributes="0"/>
-                          <Component id="jButton3" alignment="3" min="-2" pref="59" max="-2" attributes="0"/>
+                          <Component id="btnSearch" alignment="3" min="-2" pref="59" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" attributes="0">
@@ -75,19 +75,19 @@
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JButton" name="jButton1">
+    <Component class="javax.swing.JButton" name="btnSong">
       <Properties>
         <Property name="text" type="java.lang.String" value="B&#xe0;i h&#xe1;t"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton2">
+    <Component class="javax.swing.JButton" name="btnSinger">
       <Properties>
         <Property name="text" type="java.lang.String" value="Ca s&#x129;"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="jTextField1">
     </Component>
-    <Component class="javax.swing.JButton" name="jButton3">
+    <Component class="javax.swing.JButton" name="btnSearch">
       <Properties>
         <Property name="text" type="java.lang.String" value="Search"/>
       </Properties>

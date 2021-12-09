@@ -41,7 +41,13 @@ public class runApp {
         String id = "341759650";
         JsonArray resultList = app.getSongDataFromAPI(query);
         for(int i = 0; i < resultList.size(); i++){
-            System.out.println(resultList.get(i));
+            if((resultList.get(i).getAsJsonObject().get("artists").toString()).equals("null")){
+                System.out.println("Ndooo");
+                continue;
+            }else{
+                System.out.println(resultList.get(i).getAsJsonObject().get("artists").getAsJsonArray().get(0).getAsJsonObject().get("alias") + "\n");
+            }
+            
         }
     }
 }
