@@ -3,11 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package musicpj;
+package GUI;
 
 import com.google.gson.JsonArray;
 import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
+import musicpj.runApp;
 import musicpj.runApp;
 /**
  *
