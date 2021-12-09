@@ -5,9 +5,11 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import java.util.Vector;
+import javax.swing.table.DefaultTableModel;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
-
+import GUI.*;
 public class runApp {
 
     Gson gson = new Gson();
@@ -34,6 +36,8 @@ public class runApp {
         return lyrics.get("text").getAsJsonArray();
     }
 
+    
+    
     
     public static void main (String[] args) throws Exception {
         // TODO Auto-generated method stub
