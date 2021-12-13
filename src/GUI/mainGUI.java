@@ -3,18 +3,57 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package test;
+package GUI;
 
-/**
- *
- * @author ACER
- */
-public class songInforFrame extends javax.swing.JFrame {
+import UDP.client;
+import com.google.gson.JsonArray;
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.util.Scanner;
+import java.util.Vector;
+import javax.swing.table.DefaultTableModel;
+import musicpj.runApp;
+
+public class mainGUI extends javax.swing.JFrame {
 
     /**
      * Creates new form Frame1
      */
-    public songInforFrame() {
+    Vector vtHeader = new Vector();
+    Vector vtData = new Vector();
+    public static int destPort = 1234;
+    public static String hostname = "localhost";
+
+    public void displaySongData() {
+        vtHeader.add("Name");
+        vtHeader.add("Singer");
+        vtHeader.add("Artist");
+        runApp app = new runApp();
+        String query = "Nơi này có anh";
+        JsonArray listSong = app.getSongDataFromAPI(query);
+        for (int i = 0; i < listSong.size(); i++) {
+            Vector rowVt = new Vector();
+            rowVt.add(listSong.get(i).getAsJsonObject().get("heading").getAsJsonObject().get("title").getAsString());
+            rowVt.add(listSong.get(i).getAsJsonObject().get("heading").getAsJsonObject().get("subtitle").getAsString());
+//            if((listSong.get(i).getAsJsonObject().get("artists").toString()).equals("null")){
+//                rowVt.add(listSong.get(i).getAsJsonObject().get("heading").getAsJsonObject().get("subtitle").getAsString());
+//            }else{
+//                rowVt.add(listSong.get(i).getAsJsonObject().get("artists").getAsJsonArray().get(0).getAsJsonObject().get("alias").getAsString());
+//            }
+            vtData.add(rowVt);
+            tbList.setModel(new DefaultTableModel(vtData, vtHeader));
+        }
+    }
+
+    public String songSelected(int index) {
+        Vector select = (Vector) vtData.get(index);
+        String id = (String) select.get(0);
+        return id;
+    }
+
+    public mainGUI() {
         initComponents();
     }
 
@@ -31,14 +70,14 @@ public class songInforFrame extends javax.swing.JFrame {
         jEditorPane1 = new javax.swing.JEditorPane();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
-        jButton3 = new javax.swing.JButton();
+        txtSearch = new javax.swing.JTextField();
+        btnSearch = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jButton7 = new javax.swing.JButton();
         lbSongName = new javax.swing.JLabel();
         tbnSong = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tbList = new javax.swing.JTable();
         jScrollPane5 = new javax.swing.JScrollPane();
         jTextArea3 = new javax.swing.JTextArea();
 
@@ -60,7 +99,18 @@ public class songInforFrame extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setText("Tìm kiếm");
+        txtSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtSearchActionPerformed(evt);
+            }
+        });
+
+        btnSearch.setText("Tìm kiếm");
+        btnSearch.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnSearchMouseClicked(evt);
+            }
+        });
 
         jButton7.setText("Play");
         jButton7.addActionListener(new java.awt.event.ActionListener() {
@@ -102,17 +152,17 @@ public class songInforFrame extends javax.swing.JFrame {
                         .addContainerGap(76, Short.MAX_VALUE))))
         );
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tbList.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {},
+                {},
+                {}
             },
             new String [] {
-                "Tên bài hát", "Tên nhạc sĩ", "Tên ca sĩ"
+
             }
         ));
-        jScrollPane4.setViewportView(jTable1);
+        jScrollPane4.setViewportView(tbList);
 
         jTextArea3.setColumns(20);
         jTextArea3.setRows(5);
@@ -130,9 +180,9 @@ public class songInforFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(btnSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -148,8 +198,8 @@ public class songInforFrame extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -176,6 +226,18 @@ public class songInforFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton7ActionPerformed
 
+    private void btnSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSearchMouseClicked
+        // TODO add your handling code here:
+        client app = new client();
+        app.test(this.txtSearch.getText()+";btnSearch");
+        
+        
+    }//GEN-LAST:event_btnSearchMouseClicked
+
+    private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtSearchActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -193,39 +255,47 @@ public class songInforFrame extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(songInforFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(mainGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(songInforFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(mainGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(songInforFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(mainGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(songInforFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(mainGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
 
+        ////
+
+
+        /////
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new songInforFrame().setVisible(true);
+                new mainGUI().setVisible(true);
+//                new mainGUI().displaySongData();
+
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnSearch;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton7;
     private javax.swing.JEditorPane jEditorPane1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextArea jTextArea3;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel lbSongName;
+    private javax.swing.JTable tbList;
     private javax.swing.JLabel tbnSong;
+    public javax.swing.JTextField txtSearch;
     // End of variables declaration//GEN-END:variables
 }

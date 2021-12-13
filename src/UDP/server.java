@@ -12,11 +12,11 @@ public class server {
 
     public static int buffsize = 1000;
     public static int port = 1234;
-    
+
     //==========================================================================
     public static String key = "abc2b021-ffb9-453b-8b2d-c83812bbf61d";
     //==========================================================================
-    
+
     public static void main(String[] args) {
         DatagramSocket socket;
         DatagramPacket dpreceive, dpsend;
@@ -31,11 +31,7 @@ public class server {
                         + dpreceive.getAddress().getHostAddress() + " at port "
                         + socket.getLocalPort());
                 String[] trimL = tmp.split(";");
-                if (tmp.equals("bye")) {
-                    System.out.println("Server socket closed");
-                    socket.close();
-                    break;
-                }
+
                 // Uppercase, sent back to client, server status test
                 if (tmp.equals("test")) {
                     tmp = tmp.toUpperCase();
@@ -55,14 +51,14 @@ public class server {
                     continue;
                 }
                 //Load state
-                if (trimL.length == 1) {
-                    String country = trimL[0];
-                    System.out.println("---State's loading status---");
+                if (trimL[1].equals("btnSearch")) {
+                    
+                    
                     tmp = run.country(country);
                     dpsend = new DatagramPacket(tmp.getBytes(), tmp.getBytes().length,
                             dpreceive.getAddress(), dpreceive.getPort());
                     socket.send(dpsend);
-                    continue;
+                    
                 }
                 //Load city
                 if (trimL.length == 2) {
@@ -85,8 +81,8 @@ public class server {
                     dpsend = new DatagramPacket(tmp.getBytes(), tmp.getBytes().length,
                             dpreceive.getAddress(), dpreceive.getPort());
                     socket.send(dpsend);
-                    
-                }                
+
+                }
             }
         } catch (IOException e) {
             System.err.println(e);
@@ -178,7 +174,7 @@ public class server {
 
             String stat = jsonObject.getAsJsonObject().get("status").getAsString();
             System.out.println(stat);
-            
+
             aquius = "Aquius's stat: " + jsonObject.getAsJsonObject("data").getAsJsonObject("current").getAsJsonObject("pollution").get("aqius").getAsString();
             //System.out.println(aquius);
         } catch (Exception e) {

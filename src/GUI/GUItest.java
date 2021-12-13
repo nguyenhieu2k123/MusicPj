@@ -26,8 +26,7 @@ public class GUItest extends javax.swing.JFrame {
         vtHeader.add("Name");
         vtHeader.add("Singer");
         vtHeader.add("Artist");
-        
-        runApp app = new runApp();
+        runApp app = new runApp();  
         String query = "Nơi này có anh";
         JsonArray listSong = app.getSongDataFromAPI(query);
         for(int i = 0; i < listSong.size(); i++){
