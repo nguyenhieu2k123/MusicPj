@@ -11,7 +11,7 @@ import org.jsoup.Jsoup;
 
 public class server {
 
-    public static int buffsize = 1000000000;
+    public static int buffsize = 5242880;
     public static int port = 1234;
 
     public static void main(String[] args) {

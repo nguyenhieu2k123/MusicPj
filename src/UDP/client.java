@@ -11,7 +11,7 @@ public class client {
 
     public static int destPort = 1234;
     public static String hostname = "localhost";
-    public static int maxSize = 1000000000;
+    public static int maxSize = 5242880;
     public String sendRequest(String input) {
         DatagramSocket socket;
         DatagramPacket dpsend, dpreceive;
