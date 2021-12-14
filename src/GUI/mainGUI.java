@@ -38,10 +38,10 @@ public class mainGUI extends javax.swing.JFrame {
         vtHeader.add("Artist");
     }
     public void clearData(){
-        tbList.removeAll();
+         
     }
     public void displaySongData(String list) throws ParseException {
-        clearData();
+        
         vtHeader.add("Id");
         vtHeader.add("Name");
         vtHeader.add("Singer");
@@ -231,7 +231,7 @@ public class mainGUI extends javax.swing.JFrame {
     private void btnSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSearchMouseClicked
         // TODO add your handling code here:
         try{
-        
+        clearData();
         String query = this.txtSearch.getText().toString();
         displaySongData(client.sendRequest(query+";btnSearch"));
         }catch(Exception e){
