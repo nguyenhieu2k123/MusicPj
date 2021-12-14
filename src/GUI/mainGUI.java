@@ -7,6 +7,8 @@ package GUI;
 
 import UDP.client;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
+import java.awt.ComponentOrientation;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -15,43 +17,59 @@ import java.util.Scanner;
 import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
 import musicpj.runApp;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 public class mainGUI extends javax.swing.JFrame {
 
     /**
      * Creates new form Frame1
      */
+//    display data into table
     Vector vtHeader = new Vector();
     Vector vtData = new Vector();
-    public static int destPort = 1234;
-    public static String hostname = "localhost";
-
-    public void displaySongData() {
+//    public static int destPort = 1234;
+//    public static String hostname = "localhost";
+    client client = new client();
+    public void setTitleForTable(){
+        vtHeader.add("Id");
         vtHeader.add("Name");
         vtHeader.add("Singer");
         vtHeader.add("Artist");
-        runApp app = new runApp();
-        String query = "Nơi này có anh";
-        JsonArray listSong = app.getSongDataFromAPI(query);
+    }
+    public void clearData(){
+        tbList.removeAll();
+    }
+    public void displaySongData(String list) throws ParseException {
+        clearData();
+        vtHeader.add("Id");
+        vtHeader.add("Name");
+        vtHeader.add("Singer");
+        vtHeader.add("Artist");
+        JsonArray listSong = new JsonParser().parse(list).getAsJsonArray();
         for (int i = 0; i < listSong.size(); i++) {
             Vector rowVt = new Vector();
+            rowVt.add(listSong.get(i).getAsJsonObject().get("id").getAsString());
             rowVt.add(listSong.get(i).getAsJsonObject().get("heading").getAsJsonObject().get("title").getAsString());
             rowVt.add(listSong.get(i).getAsJsonObject().get("heading").getAsJsonObject().get("subtitle").getAsString());
-//            if((listSong.get(i).getAsJsonObject().get("artists").toString()).equals("null")){
-//                rowVt.add(listSong.get(i).getAsJsonObject().get("heading").getAsJsonObject().get("subtitle").getAsString());
-//            }else{
-//                rowVt.add(listSong.get(i).getAsJsonObject().get("artists").getAsJsonArray().get(0).getAsJsonObject().get("alias").getAsString());
-//            }
+            if((listSong.get(i).getAsJsonObject().get("artists").toString()).equals("null")){
+                rowVt.add(listSong.get(i).getAsJsonObject().get("heading").getAsJsonObject().get("subtitle").getAsString());
+            }else{
+                rowVt.add(listSong.get(i).getAsJsonObject().get("artists").getAsJsonArray().get(0).getAsJsonObject().get("alias").getAsString());
+            }
             vtData.add(rowVt);
             tbList.setModel(new DefaultTableModel(vtData, vtHeader));
         }
+        
     }
-
+    
+    //select row in table    
     public String songSelected(int index) {
         Vector select = (Vector) vtData.get(index);
         String id = (String) select.get(0);
         return id;
     }
+//    end
 
     public mainGUI() {
         initComponents();
@@ -73,13 +91,10 @@ public class mainGUI extends javax.swing.JFrame {
         txtSearch = new javax.swing.JTextField();
         btnSearch = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
-        jButton7 = new javax.swing.JButton();
-        lbSongName = new javax.swing.JLabel();
-        tbnSong = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
         tbList = new javax.swing.JTable();
         jScrollPane5 = new javax.swing.JScrollPane();
-        jTextArea3 = new javax.swing.JTextArea();
+        txtLyrics = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -112,61 +127,52 @@ public class mainGUI extends javax.swing.JFrame {
             }
         });
 
-        jButton7.setText("Play");
-        jButton7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton7ActionPerformed(evt);
-            }
-        });
-
-        lbSongName.setText("song name");
-
-        tbnSong.setBackground(new java.awt.Color(255, 255, 102));
-        tbnSong.setText("song thumb");
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lbSongName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(tbnSong, javax.swing.GroupLayout.DEFAULT_SIZE, 435, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+            .addGap(0, 440, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lbSongName, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(tbnSong, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(62, 62, 62)
-                        .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(76, Short.MAX_VALUE))))
+            .addGap(0, 246, Short.MAX_VALUE)
         );
 
         tbList.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {},
-                {},
-                {}
+
             },
             new String [] {
-
+                "Id", "Name", "Singer", "Artist"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tbList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbListMouseClicked(evt);
+            }
+        });
         jScrollPane4.setViewportView(tbList);
 
-        jTextArea3.setColumns(20);
-        jTextArea3.setRows(5);
-        jScrollPane5.setViewportView(jTextArea3);
+        txtLyrics.setEditable(false);
+        txtLyrics.setColumns(20);
+        txtLyrics.setRows(5);
+        txtLyrics.setAlignmentX(50.0F);
+        jScrollPane5.setViewportView(txtLyrics);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -182,11 +188,11 @@ public class mainGUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(btnSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 354, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 472, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane4))
             .addComponent(jScrollPane5)
         );
         layout.setVerticalGroup(
@@ -222,14 +228,16 @@ public class mainGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton7ActionPerformed
-
     private void btnSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSearchMouseClicked
         // TODO add your handling code here:
-        client app = new client();
-        app.test(this.txtSearch.getText()+";btnSearch");
+        try{
+        
+        String query = this.txtSearch.getText().toString();
+        displaySongData(client.sendRequest(query+";btnSearch"));
+        }catch(Exception e){
+            System.out.println(e);
+        }
+
         
         
     }//GEN-LAST:event_btnSearchMouseClicked
@@ -237,6 +245,19 @@ public class mainGUI extends javax.swing.JFrame {
     private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtSearchActionPerformed
+
+    private void tbListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbListMouseClicked
+        // TODO add your handling code here:
+        int index = tbList.getSelectedRow();
+        String lyrics = client.sendRequest(this.songSelected(index)+ ";getChosenSong");
+        JsonArray lyricsArray = new JsonParser().parse(lyrics).getAsJsonArray();
+        String s= "";
+        for(int i = 0; i < lyricsArray.size();i++){
+            s += lyricsArray.get(i).getAsString() + "\n";
+        }
+        this.txtLyrics.setText(s);
+         
+    }//GEN-LAST:event_tbListMouseClicked
 
     /**
      * @param args the command line arguments
@@ -267,16 +288,16 @@ public class mainGUI extends javax.swing.JFrame {
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
-
+        System.out.println("Client Start=========");
         ////
-
 
         /////
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new mainGUI().setVisible(true);
-//                new mainGUI().displaySongData();
+                
+                
 
             }
         });
@@ -286,16 +307,13 @@ public class mainGUI extends javax.swing.JFrame {
     private javax.swing.JButton btnSearch;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton7;
     private javax.swing.JEditorPane jEditorPane1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JTextArea jTextArea3;
-    private javax.swing.JLabel lbSongName;
     private javax.swing.JTable tbList;
-    private javax.swing.JLabel tbnSong;
+    private javax.swing.JTextArea txtLyrics;
     public javax.swing.JTextField txtSearch;
     // End of variables declaration//GEN-END:variables
 }

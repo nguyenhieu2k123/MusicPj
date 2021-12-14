@@ -39,13 +39,17 @@ public class getSongs {
         return lyrics.get("text").getAsJsonArray();
     }
 
-    
+//    public String getAudioLink(String id){
+//        
+//    }
 
     public static void main(String[] args) throws Exception {
         // TODO Auto-generated method stub
         getSongs app = new getSongs();
-//        String query = "Nơi này có anh";
-//        String id = "341759650";
+        String query = "Nơi này có anh";
+        String id = "341759650";
+        
+        System.out.println(app.getSongDataFromAPI(query));
 
     }
 

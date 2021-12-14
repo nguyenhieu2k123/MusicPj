@@ -49,8 +49,8 @@ public class runApp {
         runApp app = new runApp();
         String query = "Nơi này có anh";
         String id = "341759650";
-        System.out.println(app.getArtistsFromAPI("Son Tung MTP"));
-        JsonArray resultList = app.getSongDataFromAPI(query);
+        System.out.println(app.getLyricsDataFromAPI(id));
+//        JsonArray resultList = app.getSongDataFromAPI(query);
 //        for (int i = 0; i < resultList.size(); i++) {
 //            System.out.println(resultList.get(i).getAsJsonObject().get("artists").getAsJsonArray().get(0).getAsJsonObject().get("alias") + "\n");
 //
