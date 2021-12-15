@@ -46,6 +46,7 @@ public class server {
                     System.out.println("Server sent back " + tmp + " to client");
                     socket.send(dpsend);
                 }
+                
             }
         } catch (IOException e) {
             System.err.println(e);
