@@ -15,6 +15,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.util.Scanner;
 import java.util.Vector;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import musicpj.runApp;
 import org.json.simple.parser.JSONParser;
@@ -31,17 +32,21 @@ public class mainGUI extends javax.swing.JFrame {
 //    public static int destPort = 1234;
 //    public static String hostname = "localhost";
     client client = new client();
-    public void setTitleForTable(){
+
+    public void setTitleForTable() {
         vtHeader.add("Id");
         vtHeader.add("Name");
         vtHeader.add("Singer");
         vtHeader.add("Artist");
     }
-    public void clearData(){
-         
+
+    public void clearData(JTable table) {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0);
+        model.setColumnCount(0);
     }
+
     public void displaySongData(String list) throws ParseException {
-        
         vtHeader.add("Id");
         vtHeader.add("Name");
         vtHeader.add("Singer");
@@ -52,17 +57,16 @@ public class mainGUI extends javax.swing.JFrame {
             rowVt.add(listSong.get(i).getAsJsonObject().get("id").getAsString());
             rowVt.add(listSong.get(i).getAsJsonObject().get("heading").getAsJsonObject().get("title").getAsString());
             rowVt.add(listSong.get(i).getAsJsonObject().get("heading").getAsJsonObject().get("subtitle").getAsString());
-            if((listSong.get(i).getAsJsonObject().get("artists").toString()).equals("null")){
+            if ((listSong.get(i).getAsJsonObject().get("artists").toString()).equals("null")) {
                 rowVt.add(listSong.get(i).getAsJsonObject().get("heading").getAsJsonObject().get("subtitle").getAsString());
-            }else{
+            } else {
                 rowVt.add(listSong.get(i).getAsJsonObject().get("artists").getAsJsonArray().get(0).getAsJsonObject().get("alias").getAsString());
             }
             vtData.add(rowVt);
             tbList.setModel(new DefaultTableModel(vtData, vtHeader));
         }
-        
     }
-    
+
     //select row in table    
     public String songSelected(int index) {
         Vector select = (Vector) vtData.get(index);
@@ -230,16 +234,15 @@ public class mainGUI extends javax.swing.JFrame {
 
     private void btnSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSearchMouseClicked
         // TODO add your handling code here:
-        try{
-        clearData();
-        String query = this.txtSearch.getText().toString();
-        displaySongData(client.sendRequest(query+";btnSearch"));
-        }catch(Exception e){
+        try {
+            clearData(tbList);
+            String query = this.txtSearch.getText().toString();
+            displaySongData(client.sendRequest(query + ";btnSearch"));
+        } catch (Exception e) {
             System.out.println(e);
         }
 
-        
-        
+
     }//GEN-LAST:event_btnSearchMouseClicked
 
     private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
@@ -249,14 +252,14 @@ public class mainGUI extends javax.swing.JFrame {
     private void tbListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbListMouseClicked
         // TODO add your handling code here:
         int index = tbList.getSelectedRow();
-        String lyrics = client.sendRequest(this.songSelected(index)+ ";getChosenSong");
+        String lyrics = client.sendRequest(this.songSelected(index) + ";getChosenSong");
         JsonArray lyricsArray = new JsonParser().parse(lyrics).getAsJsonArray();
-        String s= "";
-        for(int i = 0; i < lyricsArray.size();i++){
+        String s = "";
+        for (int i = 0; i < lyricsArray.size(); i++) {
             s += lyricsArray.get(i).getAsString() + "\n";
         }
         this.txtLyrics.setText(s);
-         
+
     }//GEN-LAST:event_tbListMouseClicked
 
     /**
@@ -296,8 +299,6 @@ public class mainGUI extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new mainGUI().setVisible(true);
-                
-                
 
             }
         });
