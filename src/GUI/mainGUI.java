@@ -33,13 +33,6 @@ public class mainGUI extends javax.swing.JFrame {
 //    public static String hostname = "localhost";
     client client = new client();
 
-    public void setTitleForTable() {
-        vtHeader.add("Id");
-        vtHeader.add("Name");
-        vtHeader.add("Singer");
-        vtHeader.add("Artist");
-    }
-
     public void clearData(JTable table) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
@@ -259,7 +252,6 @@ public class mainGUI extends javax.swing.JFrame {
             s += lyricsArray.get(i).getAsString() + "\n";
         }
         this.txtLyrics.setText(s);
-
     }//GEN-LAST:event_tbListMouseClicked
 
     /**
@@ -291,7 +283,7 @@ public class mainGUI extends javax.swing.JFrame {
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
-        System.out.println("Client Start=========");
+        System.out.println("Client Start  =========");
         ////
 
         /////
