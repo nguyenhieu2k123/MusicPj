@@ -44,7 +44,8 @@ public class mainGUI extends javax.swing.JFrame {
 
     public void loadImg(String imgLink) throws MalformedURLException, IOException {
         BufferedImage img = ImageIO.read(new URL(imgLink));
-        this.jlbAvatar.setIcon(new javax.swing.ImageIcon(img));
+        Image newImage = img.getScaledInstance(406, 287, Image.SCALE_DEFAULT);
+        this.jlbAvatar.setIcon(new javax.swing.ImageIcon(newImage));
     }
 
     public void clearData(JTable table) {
@@ -252,29 +253,29 @@ public class mainGUI extends javax.swing.JFrame {
 
     private void tbListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbListMouseClicked
         // TODO add your handling code here:
-      
-            int index = tbList.getSelectedRow();
-            String lyrics = client.sendRequest(this.songSelected(index) + ";getChosenSong");
-            JsonObject lyricsResult = new JsonParser().parse(lyrics).getAsJsonObject();
-            System.out.println(lyricsResult);
-            JsonArray lyricsArray = lyricsResult.get("sections").getAsJsonArray().get(1).getAsJsonObject().get("text").getAsJsonArray();
-            String imgLink = lyricsResult.get("images").getAsJsonObject().get("background").getAsString();
-            String s = "";
-            for (int i = 0; i < lyricsArray.size(); i++) {
-                s += lyricsArray.get(i).getAsString() + "\n";
-            }
-            this.txtLyrics.setText(s);
-            BufferedImage img;
+
+        int index = tbList.getSelectedRow();
+        String lyrics = client.sendRequest(this.songSelected(index) + ";getChosenSong");
+        JsonObject lyricsResult = new JsonParser().parse(lyrics).getAsJsonObject();
+        JsonArray lyricsArray = lyricsResult.get("sections").getAsJsonArray().get(1).getAsJsonObject().get("text").getAsJsonArray();
+        String imgLink = lyricsResult.get("images").getAsJsonObject().get("background").getAsString();
+        String s = "";
+        for (int i = 0; i < lyricsArray.size(); i++) {
+            s += lyricsArray.get(i).getAsString() + "\n";
+        }
+        this.txtLyrics.setText(s);
+//        BufferedImage img;
         try {
-            img = ImageIO.read(new URL(imgLink));
-            this.jlbAvatar.setIcon(new javax.swing.ImageIcon(img));
+            loadImg(imgLink);
+//            img = ImageIO.read(new URL(imgLink));
+//            Image newImage = img.getScaledInstance(40, 40, Image.SCALE_DEFAULT);
+//        this.jlbAvatar.setIcon(new javax.swing.ImageIcon(newImage));
+            
         } catch (MalformedURLException ex) {
             Logger.getLogger(mainGUI.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(mainGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
-            
-       
 
 
     }//GEN-LAST:event_tbListMouseClicked
