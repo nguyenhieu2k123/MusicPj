@@ -1,5 +1,6 @@
 package UDP;
 
+import Songs.getSongs;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -18,7 +19,7 @@ public class server {
         DatagramSocket socket;
         DatagramPacket dpreceive, dpsend;
         server run = new server();
-        runApp app = new runApp();
+        getSongs app = new getSongs();
         System.out.println("Server Start");
         try {
             socket = new DatagramSocket(1234);
@@ -40,7 +41,7 @@ public class server {
                     socket.send(dpsend);
                 }
                 else if (command[1].equals("getChosenSong")) {
-                    JsonArray result = new JsonArray();
+                    JsonObject result = new JsonObject();
                     result = app.getLyricsDataFromAPI(command[0]);
                     dpsend = new DatagramPacket(result.toString().getBytes(), result.toString().getBytes().length,dpreceive.getAddress(), dpreceive.getPort());
                     System.out.println("Server sent back " + tmp + " to client");

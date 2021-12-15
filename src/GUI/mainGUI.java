@@ -7,6 +7,7 @@ package GUI;
 
 import UDP.client;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import java.awt.ComponentOrientation;
 import java.io.IOException;
@@ -25,6 +26,9 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.net.MalformedURLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class mainGUI extends javax.swing.JFrame {
 
@@ -37,6 +41,11 @@ public class mainGUI extends javax.swing.JFrame {
 //    public static int destPort = 1234;
 //    public static String hostname = "localhost";
     client client = new client();
+
+    public void loadImg(String imgLink) throws MalformedURLException, IOException {
+        BufferedImage img = ImageIO.read(new URL(imgLink));
+        this.jlbAvatar.setIcon(new javax.swing.ImageIcon(img));
+    }
 
     public void clearData(JTable table) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
@@ -229,6 +238,7 @@ public class mainGUI extends javax.swing.JFrame {
             clearData(tbList);
             String query = this.txtSearch.getText().toString();
             displaySongData(client.sendRequest(query + ";btnSearch"));
+
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -242,15 +252,31 @@ public class mainGUI extends javax.swing.JFrame {
 
     private void tbListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbListMouseClicked
         // TODO add your handling code here:
-        int index = tbList.getSelectedRow();
-        String lyrics = client.sendRequest(this.songSelected(index) + ";getChosenSong");
-        JsonArray lyricsArray = new JsonParser().parse(lyrics).getAsJsonArray();
-        
-        String s = "";
-        for (int i = 0; i < lyricsArray.size(); i++) {
-            s += lyricsArray.get(i).getAsString() + "\n";
+      
+            int index = tbList.getSelectedRow();
+            String lyrics = client.sendRequest(this.songSelected(index) + ";getChosenSong");
+            JsonObject lyricsResult = new JsonParser().parse(lyrics).getAsJsonObject();
+            System.out.println(lyricsResult);
+            JsonArray lyricsArray = lyricsResult.get("sections").getAsJsonArray().get(1).getAsJsonObject().get("text").getAsJsonArray();
+            String imgLink = lyricsResult.get("images").getAsJsonObject().get("background").getAsString();
+            String s = "";
+            for (int i = 0; i < lyricsArray.size(); i++) {
+                s += lyricsArray.get(i).getAsString() + "\n";
+            }
+            this.txtLyrics.setText(s);
+            BufferedImage img;
+        try {
+            img = ImageIO.read(new URL(imgLink));
+            this.jlbAvatar.setIcon(new javax.swing.ImageIcon(img));
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(mainGUI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(mainGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
-        this.txtLyrics.setText(s);
+            
+       
+
+
     }//GEN-LAST:event_tbListMouseClicked
 
     /**

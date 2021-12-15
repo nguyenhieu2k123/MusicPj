@@ -28,15 +28,15 @@ public class getSongs {
         return result;
     }
 
-    public JsonArray getLyricsDataFromAPI(String id) {
+    public JsonObject getLyricsDataFromAPI(String id) {
         HttpResponse<String> response = Unirest.get("https://shazam-core.p.rapidapi.com/v1/tracks/details?track_id=" + id)
                 .header("x-rapidapi-host", "shazam-core.p.rapidapi.com")
                 .header("x-rapidapi-key", "533d42cd24msheb307f07f2b6174p1c9e7fjsn952ba01d8c63")
                 .asString();
         String inf = response.getBody();
         JsonObject lyricsData = new JsonParser().parse(inf).getAsJsonObject();
-        JsonObject lyrics = lyricsData.get("sections").getAsJsonArray().get(1).getAsJsonObject();
-        return lyrics.get("text").getAsJsonArray();
+//        JsonObject lyrics = lyricsData.get("sections").getAsJsonArray().get(1).getAsJsonObject();
+        return lyricsData;
     }
 
 //    public String getAudioLink(String id){
@@ -49,7 +49,7 @@ public class getSongs {
         String query = "Nơi này có anh";
         String id = "341759650";
         
-        System.out.println(app.getSongDataFromAPI(query));
+        System.out.println(app.getLyricsDataFromAPI(id).getAsJsonObject().get("id").getAsString());
 
     }
 
