@@ -1,6 +1,5 @@
 package Artist;
 
-import musicpj.*;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -14,13 +13,13 @@ import Jwiki.Jwiki;
 import java.util.ArrayList;
 
 public class getArtist {
-
+    public String key = "23bada79a5msh6058f55ecefadb6p1e2c08jsn1920e07802eb";
     Gson gson = new Gson();
 
     public JsonObject getArtist(String artist) {
         HttpResponse<String> response = Unirest.get("https://shazam-core.p.rapidapi.com/v1/artists/search?query=" + artist)
                 .header("x-rapidapi-host", "shazam-core.p.rapidapi.com")
-                .header("x-rapidapi-key", "840f24fd8amsh807b040539915b3p18a152jsn0a354b6685e8")
+                .header("x-rapidapi-key", key)
                 .asString();
         String infString = response.getBody();
         JsonArray result = new JsonParser().parse(infString).getAsJsonArray();
@@ -44,7 +43,7 @@ public class getArtist {
     public JsonArray getTracksOfArtist(String id){
         HttpResponse<String> response = Unirest.get("https://shazam-core.p.rapidapi.com/v1/artists/tracks?artist_id="+id+"&limit=7")
 	.header("x-rapidapi-host", "shazam-core.p.rapidapi.com")
-	.header("x-rapidapi-key", "840f24fd8amsh807b040539915b3p18a152jsn0a354b6685e8")
+	.header("x-rapidapi-key", key)
 	.asString();
         String infString = response.getBody();
         JsonArray result = new JsonParser().parse(infString).getAsJsonArray();

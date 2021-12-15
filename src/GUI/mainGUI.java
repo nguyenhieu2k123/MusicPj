@@ -15,14 +15,10 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.URL;
-import java.util.Scanner;
 import java.util.Vector;
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import musicpj.runApp;
-import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -44,7 +40,7 @@ public class mainGUI extends javax.swing.JFrame {
 
     public void loadImg(String imgLink) throws MalformedURLException, IOException {
         BufferedImage img = ImageIO.read(new URL(imgLink));
-        Image newImage = img.getScaledInstance(406, 287, Image.SCALE_DEFAULT);
+        Image newImage = img.getScaledInstance(200, 200, Image.SCALE_DEFAULT);
         this.jlbAvatar.setIcon(new javax.swing.ImageIcon(newImage));
     }
 
@@ -58,18 +54,18 @@ public class mainGUI extends javax.swing.JFrame {
         vtHeader.add("Id");
         vtHeader.add("Name");
         vtHeader.add("Singer");
-        vtHeader.add("Artist");
+//        vtHeader.add("Artist");
         JsonArray listSong = new JsonParser().parse(list).getAsJsonArray();
         for (int i = 0; i < listSong.size(); i++) {
             Vector rowVt = new Vector();
             rowVt.add(listSong.get(i).getAsJsonObject().get("id").getAsString());
             rowVt.add(listSong.get(i).getAsJsonObject().get("heading").getAsJsonObject().get("title").getAsString());
             rowVt.add(listSong.get(i).getAsJsonObject().get("heading").getAsJsonObject().get("subtitle").getAsString());
-            if ((listSong.get(i).getAsJsonObject().get("artists").toString()).equals("null")) {
-                rowVt.add(listSong.get(i).getAsJsonObject().get("heading").getAsJsonObject().get("subtitle").getAsString());
-            } else {
-                rowVt.add(listSong.get(i).getAsJsonObject().get("artists").getAsJsonArray().get(0).getAsJsonObject().get("alias").getAsString());
-            }
+//            if ((listSong.get(i).getAsJsonObject().get("artists").toString()).equals("null")) {
+//                rowVt.add(listSong.get(i).getAsJsonObject().get("heading").getAsJsonObject().get("subtitle").getAsString());
+//            } else {
+//                rowVt.add(listSong.get(i).getAsJsonObject().get("artists").getAsJsonArray().get(0).getAsJsonObject().get("alias").getAsString());
+//            }
             vtData.add(rowVt);
             tbList.setModel(new DefaultTableModel(vtData, vtHeader));
         }
@@ -96,8 +92,6 @@ public class mainGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jEditorPane1 = new javax.swing.JEditorPane();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         txtSearch = new javax.swing.JTextField();
@@ -107,10 +101,11 @@ public class mainGUI extends javax.swing.JFrame {
         jScrollPane5 = new javax.swing.JScrollPane();
         txtLyrics = new javax.swing.JTextArea();
         jlbAvatar = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jlbSongName = new javax.swing.JLabel();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jScrollPane1.setViewportView(jEditorPane1);
 
         jButton1.setText("Ca sĩ");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -126,6 +121,11 @@ public class mainGUI extends javax.swing.JFrame {
             }
         });
 
+        txtSearch.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtSearchMouseClicked(evt);
+            }
+        });
         txtSearch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtSearchActionPerformed(evt);
@@ -144,14 +144,14 @@ public class mainGUI extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Id", "Name", "Singer", "Artist"
+                "Id", "Name", "Singer"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -168,6 +168,9 @@ public class mainGUI extends javax.swing.JFrame {
             }
         });
         jScrollPane4.setViewportView(tbList);
+        if (tbList.getColumnModel().getColumnCount() > 0) {
+            tbList.getColumnModel().getColumn(0).setMinWidth(20);
+        }
 
         txtLyrics.setEditable(false);
         txtLyrics.setColumns(20);
@@ -175,30 +178,43 @@ public class mainGUI extends javax.swing.JFrame {
         txtLyrics.setAlignmentX(50.0F);
         jScrollPane5.setViewportView(txtLyrics);
 
+        jlbAvatar.setBackground(new java.awt.Color(255, 51, 51));
+        jlbAvatar.setForeground(new java.awt.Color(204, 255, 255));
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fortune_god.jpeg"))); // NOI18N
+        jLabel1.setText("jLabel1");
+
+        jlbSongName.setText("Song name:");
+
+        jButton3.setText("jButton3");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane5)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jlbAvatar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(89, 89, 89)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 354, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(46, 46, 46)
-                        .addComponent(jScrollPane4))))
+                        .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jlbSongName, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jlbAvatar, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton3))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane4))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -211,15 +227,21 @@ public class mainGUI extends javax.swing.JFrame {
                             .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 287, Short.MAX_VALUE)
-                    .addComponent(jlbAvatar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 378, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jlbSongName, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jlbAvatar, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton3))
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10))
         );
 
         pack();
@@ -255,30 +277,35 @@ public class mainGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
 
         int index = tbList.getSelectedRow();
+        this.txtLyrics.setText("Lyrics not found!! From api with love <3");
         String lyrics = client.sendRequest(this.songSelected(index) + ";getChosenSong");
         JsonObject lyricsResult = new JsonParser().parse(lyrics).getAsJsonObject();
-        JsonArray lyricsArray = lyricsResult.get("sections").getAsJsonArray().get(1).getAsJsonObject().get("text").getAsJsonArray();
         String imgLink = lyricsResult.get("images").getAsJsonObject().get("background").getAsString();
-        String s = "";
-        for (int i = 0; i < lyricsArray.size(); i++) {
-            s += lyricsArray.get(i).getAsString() + "\n";
-        }
-        this.txtLyrics.setText(s);
-//        BufferedImage img;
         try {
             loadImg(imgLink);
-//            img = ImageIO.read(new URL(imgLink));
-//            Image newImage = img.getScaledInstance(40, 40, Image.SCALE_DEFAULT);
-//        this.jlbAvatar.setIcon(new javax.swing.ImageIcon(newImage));
-            
         } catch (MalformedURLException ex) {
             Logger.getLogger(mainGUI.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(mainGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+        JsonArray lyricsArray = lyricsResult.get("sections").getAsJsonArray().get(1).getAsJsonObject().get("text").getAsJsonArray();
+
+        String s = "";
+        for (int i = 0; i < lyricsArray.size(); i++) {
+            s += lyricsArray.get(i).getAsString() + "\n";
+        }
+        this.txtLyrics.setText(s);
+        this.jlbSongName.setText("Song name: "+ tbList.getValueAt(index, 1));
+//        BufferedImage img;
+
 
     }//GEN-LAST:event_tbListMouseClicked
+
+    private void txtSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtSearchMouseClicked
+        // TODO add your handling code here:
+        this.txtSearch.setText("");
+    }//GEN-LAST:event_txtSearchMouseClicked
 
     /**
      * @param args the command line arguments
@@ -326,11 +353,12 @@ public class mainGUI extends javax.swing.JFrame {
     private javax.swing.JButton btnSearch;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JEditorPane jEditorPane1;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JLabel jlbAvatar;
+    private javax.swing.JLabel jlbSongName;
     private javax.swing.JTable tbList;
     private javax.swing.JTextArea txtLyrics;
     public javax.swing.JTextField txtSearch;
