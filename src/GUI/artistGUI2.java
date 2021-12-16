@@ -5,6 +5,7 @@
 
 package GUI;
 
+import Artist.getArtist;
 import UDP.client;
 
 /**
@@ -21,6 +22,7 @@ public class artistGUI2 extends javax.swing.JFrame {
         initComponents();
     }
     client client = new client();
+    getArtist artist = new getArtist();
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -62,6 +64,11 @@ public class artistGUI2 extends javax.swing.JFrame {
             }
         });
 
+        txtSearch.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtSearchMouseClicked(evt);
+            }
+        });
         txtSearch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtSearchActionPerformed(evt);
@@ -131,8 +138,10 @@ public class artistGUI2 extends javax.swing.JFrame {
         jlbAvatar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/artist.png"))); // NOI18N
         jlbAvatar.setText("164x131");
 
+        txtInfo.setEditable(false);
         txtInfo.setColumns(20);
         txtInfo.setRows(5);
+        txtInfo.setAutoscrolls(false);
         jScrollPane2.setViewportView(txtInfo);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -207,6 +216,9 @@ public class artistGUI2 extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    public void loadData(String data){
+        this.txtInfo.setText(data);
+    }
     private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtSearchActionPerformed
@@ -219,9 +231,22 @@ public class artistGUI2 extends javax.swing.JFrame {
 
     private void jbtnSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtnSearchMouseClicked
         // TODO add your handling code here:
-        client.sendRequest(this.txtSearch.getText());
+        try {
+            this.txtInfo.setText("");
+            String query = this.txtSearch.getText().toString();
+            String result = client.sendRequest(query + ";searchArtist");
+            this.txtInfo.setText(result);
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
         
     }//GEN-LAST:event_jbtnSearchMouseClicked
+
+    private void txtSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtSearchMouseClicked
+        // TODO add your handling code here:
+        this.txtSearch.setText("");
+    }//GEN-LAST:event_txtSearchMouseClicked
 
     /**
      * @param args the command line arguments

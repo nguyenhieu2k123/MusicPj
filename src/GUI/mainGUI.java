@@ -266,12 +266,9 @@ public class mainGUI extends javax.swing.JFrame {
             clearData(tbList);
             String query = this.txtSearch.getText().toString();
             displaySongData(client.sendRequest(query + ";btnSearch"));
-
         } catch (Exception e) {
             System.out.println(e);
         }
-
-
     }//GEN-LAST:event_btnSearchMouseClicked
 
     private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed

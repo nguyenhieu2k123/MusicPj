@@ -53,12 +53,9 @@ public class getArtist {
     public static void main(String[] args) throws Exception {
         // TODO Auto-generated method stub
         getArtist app = new getArtist();
-        String query = "Hồ ngọc hà";
+        String query = "Hồ Ngọc Hà";
         System.out.println(app.getArtist(query));
         System.out.println(app.getTracksOfArtist(app.getArtist(query).getAsJsonObject().get("id").getAsString()));
-//        System.out.println(app.getArtistsInf(app.getArtist(query).getAsJsonObject().get("name").getAsString()));
-        
-
     }
 
 }

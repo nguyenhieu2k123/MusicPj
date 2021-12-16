@@ -1,13 +1,12 @@
 package UDP;
 
+import Artist.getArtist;
 import Songs.getSongs;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import org.jsoup.Jsoup;
 
 public class server {
 
@@ -18,7 +17,8 @@ public class server {
         DatagramSocket socket;
         DatagramPacket dpreceive, dpsend;
         server run = new server();
-        getSongs app = new getSongs();
+        getSongs song = new getSongs();
+        getArtist artist = new getArtist();
         System.out.println("Server Start");
         try {
             socket = new DatagramSocket(1234);
@@ -30,23 +30,27 @@ public class server {
                         + dpreceive.getAddress().getHostAddress() + " at port "
                         + socket.getLocalPort());
                 String[] command = tmp.split(";");
-
                 // Uppercase, sent back to client, server status test
                 if (command[1].equals("btnSearch")) {
                     JsonArray result = new JsonArray();
-                    result = app.getSongDataFromAPI(command[0]);    
+                    result = song.getSongDataFromAPI(command[0]);    
                     dpsend = new DatagramPacket(result.toString().getBytes(), result.toString().getBytes().length,dpreceive.getAddress(), dpreceive.getPort());
                     System.out.println("Server sent back " + tmp + " to client");
                     socket.send(dpsend);
                 }
                 else if (command[1].equals("getChosenSong")) {
                     JsonObject result = new JsonObject();
-                    result = app.getLyricsDataFromAPI(command[0]);
+                    result = song.getLyricsDataFromAPI(command[0]);
+                    dpsend = new DatagramPacket(result.toString().getBytes(), result.toString().getBytes().length,dpreceive.getAddress(), dpreceive.getPort());
+                    System.out.println("Server sent back " + tmp + " to client");
+                    socket.send(dpsend);
+                }else if (command[1].equals("searchArtist")) {
+                    String result = "";
+                    result += artist.getArtistsInf(command[0]);
                     dpsend = new DatagramPacket(result.toString().getBytes(), result.toString().getBytes().length,dpreceive.getAddress(), dpreceive.getPort());
                     System.out.println("Server sent back " + tmp + " to client");
                     socket.send(dpsend);
                 }
-                
             }
         } catch (IOException e) {
             System.err.println(e);
