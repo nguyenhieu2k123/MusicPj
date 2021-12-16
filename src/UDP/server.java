@@ -32,11 +32,19 @@ public class server {
                 String[] command = tmp.split(";");
                 // Uppercase, sent back to client, server status test
                 if (command[1].equals("btnSearch")) {
+
                     JsonArray result = new JsonArray();
                     result = song.getSongDataFromAPI(command[0]);
-                    dpsend = new DatagramPacket(result.toString().getBytes(), result.toString().getBytes().length, dpreceive.getAddress(), dpreceive.getPort());
-                    System.out.println("Server sent back " + tmp + " to client");
-                    socket.send(dpsend);
+                    if (result.size() != 0) {
+                        dpsend = new DatagramPacket(result.toString().getBytes(), result.toString().getBytes().length, dpreceive.getAddress(), dpreceive.getPort());
+                        System.out.println("Server sent back " + tmp + " to client");
+                        socket.send(dpsend);
+                    } else {
+                        String error = "Trên API không có bài này <3 ";
+                        dpsend = new DatagramPacket(error.getBytes(), error.getBytes().length, dpreceive.getAddress(), dpreceive.getPort());
+                        socket.send(dpsend);
+                    }
+
                 } else if (command[1].equals("getChosenSong")) {
                     JsonObject result = new JsonObject();
                     result = song.getLyricsDataFromAPI(command[0]);

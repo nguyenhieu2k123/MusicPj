@@ -25,6 +25,8 @@ import java.awt.image.BufferedImage;
 import java.net.MalformedURLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 public class mainGUI extends javax.swing.JFrame {
 
@@ -37,6 +39,7 @@ public class mainGUI extends javax.swing.JFrame {
 //    public static int destPort = 1234;
 //    public static String hostname = "localhost";
     client client = new client();
+
     // Load anh len frame
     public void loadImg(String imgLink) throws MalformedURLException, IOException {
         BufferedImage img = ImageIO.read(new URL(imgLink));
@@ -106,6 +109,8 @@ public class mainGUI extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 102, 102));
 
+        jPanel1.setBackground(new java.awt.Color(243, 255, 253));
+
         txtSearch.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 txtSearchMouseClicked(evt);
@@ -117,6 +122,8 @@ public class mainGUI extends javax.swing.JFrame {
             }
         });
 
+        btnSearch.setBackground(new java.awt.Color(255, 255, 255));
+        btnSearch.setForeground(new java.awt.Color(195, 135, 255));
         btnSearch.setText("Search");
         btnSearch.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -165,7 +172,7 @@ public class mainGUI extends javax.swing.JFrame {
         txtLyrics.setEditable(false);
         txtLyrics.setColumns(20);
         txtLyrics.setRows(5);
-        txtLyrics.setAlignmentX(50.0F);
+        txtLyrics.setAutoscrolls(false);
         jScrollPane5.setViewportView(txtLyrics);
 
         jlbAvatar.setBackground(new java.awt.Color(255, 51, 51));
@@ -174,9 +181,14 @@ public class mainGUI extends javax.swing.JFrame {
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mercenary-soul copy.png"))); // NOI18N
 
-        jlbSongName.setText("Song name:");
-
+        jButton3.setBackground(new java.awt.Color(255, 255, 255));
+        jButton3.setForeground(new java.awt.Color(195, 135, 255));
         jButton3.setText("Play demo");
+        jButton3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton3MouseClicked(evt);
+            }
+        });
 
         btnSwitch.setText("Artist");
         btnSwitch.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -195,6 +207,8 @@ public class mainGUI extends javax.swing.JFrame {
         jLabel3.setForeground(new java.awt.Color(195, 135, 255));
         jLabel3.setText("Mercenary  Media");
 
+        btnArtist.setBackground(new java.awt.Color(255, 255, 255));
+        btnArtist.setForeground(new java.awt.Color(195, 135, 255));
         btnArtist.setText("Artist");
         btnArtist.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -212,14 +226,11 @@ public class mainGUI extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
-                        .addComponent(jlbSongName, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jlbSongName, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(31, 31, 31)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 475, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -270,7 +281,7 @@ public class mainGUI extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addComponent(jlbAvatar, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jButton3))
+                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE))
                         .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -295,13 +306,30 @@ public class mainGUI extends javax.swing.JFrame {
 
     private void btnSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSearchMouseClicked
         // TODO add your handling code here:
-        try {
+
+        if (txtSearch.getText().length() < 3) {
+            JOptionPane.showMessageDialog(rootPane, "CáiAPI này nó bắt nhập tên bài hát hơn 3 từ mới được <3");
+        } else {
             clearData(tbList);
-            String query = this.txtSearch.getText().toString();
-            displaySongData(client.sendRequest(query + ";btnSearch"));
-        } catch (Exception e) {
-            System.out.println(e);
+            this.txtLyrics.setText("");
+            ImageIcon imgThisImg = new ImageIcon("./src/artist copy.png");
+            jlbAvatar.setIcon(imgThisImg);
+            jlbSongName.setText("");
+            try {
+                String msg = "Trên API không có bài này <3 ";
+                String query = this.txtSearch.getText().toString();
+                String respond = client.sendRequest(query + ";btnSearch");
+                if (!respond.equalsIgnoreCase(msg)) {
+                    displaySongData(respond);
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, msg);
+                }
+            } catch (Exception e) {
+                System.out.println(e);
+            }
         }
+
+
     }//GEN-LAST:event_btnSearchMouseClicked
 
     private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
@@ -323,17 +351,20 @@ public class mainGUI extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(mainGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        JsonArray lyricsArray = lyricsResult.get("sections").getAsJsonArray().get(1).getAsJsonObject().get("text").getAsJsonArray();
-        //bien s de luu loi bai hat
-        String s = "";
-        
-        for (int i = 0; i < lyricsArray.size(); i++) {
-            s += lyricsArray.get(i).getAsString() + "\n";
+        try {
+            JsonArray lyricsArray = lyricsResult.get("sections").getAsJsonArray().get(1).getAsJsonObject().get("text").getAsJsonArray();
+            //bien s de luu loi bai hat
+            String lyric = "";
+
+            for (int i = 0; i < lyricsArray.size(); i++) {
+                lyric += lyricsArray.get(i).getAsString() + "\n";
+            }
+            this.txtLyrics.setText(lyric);
+        } catch (Exception e) {
+            System.out.println("Bài này k có lời");
         }
-        this.txtLyrics.setText(s);
         //Hien thi ten bai hat len label
-        this.jlbSongName.setText("Song name: "+ tbList.getValueAt(index, 1));
+        this.jlbSongName.setText(" " + tbList.getValueAt(index, 1));
     }//GEN-LAST:event_tbListMouseClicked
 
     private void txtSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtSearchMouseClicked
@@ -353,7 +384,7 @@ public class mainGUI extends javax.swing.JFrame {
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void btnArtistMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnArtistMouseClicked
@@ -365,6 +396,11 @@ public class mainGUI extends javax.swing.JFrame {
     private void btnArtistActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnArtistActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnArtistActionPerformed
+
+    private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
+        // TODO add your handling code here:
+        JOptionPane.showMessageDialog(rootPane, "Hihi nhóm em không làm được cái này, Thầy nhẹ tay thôi nhé thầy <3 <3 <3 ");
+    }//GEN-LAST:event_jButton3MouseClicked
 
     /**
      * @param args the command line arguments

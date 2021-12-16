@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class getArtist {
 
-    public String key = "23bada79a5msh6058f55ecefadb6p1e2c08jsn1920e07802eb";
+    public String key = "816000848fmshd35ce00429d6043p1296fdjsnea474485598e";
     Gson gson = new Gson();
 
     public JsonObject getArtist(String artist) {
@@ -68,9 +68,13 @@ public class getArtist {
     public static void main(String[] args) throws Exception {
         // TODO Auto-generated method stub
         getArtist app = new getArtist();
-        String query = "Sơn Tùng M-TP";
-        System.out.println(app.getArtistsInf(query));
+//        String query = "Sơn Tùng M-TP";
+//        System.out.println(app.getArtistsInf(query));
 //        System.out.println(app.getTracksOfArtist(app.getArtist(query)));
+            JsonArray a = new JsonArray();
+            if(a.size()==0){
+                System.out.println("asdasd");
+            }
     }
 
 }
