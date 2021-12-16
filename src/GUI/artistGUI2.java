@@ -283,7 +283,9 @@ public class artistGUI2 extends javax.swing.JFrame {
     private void jbtnSongsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtnSongsMouseClicked
         // TODO add your handling code here:
         this.dispose();
-        new mainGUI().setVisible(true);
+        mainGUI main = new mainGUI();
+        main.setLocationRelativeTo(null);  // *** this will center your app ***
+        main.setVisible(true);
     }//GEN-LAST:event_jbtnSongsMouseClicked
 
     private void jbtnSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtnSearchMouseClicked
@@ -304,7 +306,7 @@ public class artistGUI2 extends javax.swing.JFrame {
                 this.txtInfo.setText(result[0]);
                 //Hien thi anh nghe si
                 loadImg(imgLink);
-            }else{
+            } else {
                 ImageIcon imgThisImg = new ImageIcon("./src/artist.png");
                 jlbAvatar.setIcon(imgThisImg);
                 JOptionPane.showMessageDialog(rootPane, "Xin lỗi thầy nhưng mà cái ông này không có sẵn trên API :(((( ");
@@ -356,8 +358,10 @@ public class artistGUI2 extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+//                new artistGUI2().setVisible(true);
+                new artistGUI2().setLocationRelativeTo(null);  // *** this will center your app ***
                 new artistGUI2().setVisible(true);
-
+                new artistGUI2().pack();
             }
         });
     }
