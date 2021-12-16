@@ -35,13 +35,13 @@ public class getArtist {
     //cút
     public String getArtistsInf(String name) {
         Jwiki jwiki = new Jwiki(name);
-        String arttistInf = jwiki.getDisplayTitle() + "\n" + jwiki.getExtractText() + "\n" + jwiki.getImageURL();
+        String arttistInf = jwiki.getDisplayTitle() + "\n \n" + jwiki.getExtractText();
         return arttistInf;
     }
     //
     
     public JsonArray getTracksOfArtist(String id){
-        HttpResponse<String> response = Unirest.get("https://shazam-core.p.rapidapi.com/v1/artists/tracks?artist_id="+id+"&limit=7")
+        HttpResponse<String> response = Unirest.get("https://shazam-core.p.rapidapi.com/v1/artists/tracks?artist_id="+id+"&limit=10")
 	.header("x-rapidapi-host", "shazam-core.p.rapidapi.com")
 	.header("x-rapidapi-key", key)
 	.asString();
@@ -55,7 +55,7 @@ public class getArtist {
         getArtist app = new getArtist();
         String query = "Hồ Ngọc Hà";
         System.out.println(app.getArtist(query));
-        System.out.println(app.getTracksOfArtist(app.getArtist(query).getAsJsonObject().get("id").getAsString()));
+//        System.out.println(app.getTracksOfArtist(app.getArtist(query)));
     }
 
 }

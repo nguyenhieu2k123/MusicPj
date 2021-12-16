@@ -45,8 +45,22 @@ public class server {
                     System.out.println("Server sent back " + tmp + " to client");
                     socket.send(dpsend);
                 }else if (command[1].equals("searchArtist")) {
+                    //Dung jwiki lay thong tin nghe si
+                    String artistInf = "";
+                    artistInf += artist.getArtistsInf(command[0]);
+                     
+                     
                     String result = "";
-                    result += artist.getArtistsInf(command[0]);
+                    
+                    JsonArray trackResult = new JsonArray();
+                    //goi API lay nghe si can tim
+                    JsonObject respond = artist.getArtist(command[0]);
+                    //Id nghe si
+                    String artistId = respond.get("id").getAsString();
+                    //Link anh
+                    String imgLink = respond.get("avatar").getAsJsonObject().get("default").getAsString();
+                    trackResult = artist.getTracksOfArtist(artistId);
+                    result = artistInf + "~" +trackResult + "~" + imgLink;
                     dpsend = new DatagramPacket(result.toString().getBytes(), result.toString().getBytes().length,dpreceive.getAddress(), dpreceive.getPort());
                     System.out.println("Server sent back " + tmp + " to client");
                     socket.send(dpsend);
