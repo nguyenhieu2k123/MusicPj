@@ -14,7 +14,11 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import org.json.simple.parser.ParseException;
@@ -31,7 +35,7 @@ public class artistGUI2 extends javax.swing.JFrame {
     public artistGUI2() {
         initComponents();
     }
-    
+
     client client = new client();
     getArtist artist = new getArtist();
     Vector vtHeader = new Vector();
@@ -277,22 +281,29 @@ public class artistGUI2 extends javax.swing.JFrame {
     }//GEN-LAST:event_jbtnSongsMouseClicked
 
     private void jbtnSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtnSearchMouseClicked
-        // TODO add your handling code here:
+
         try {
             this.txtInfo.setText("");
             clearData(jtbTracks);
             String query = this.txtSearch.getText().toString();
             String respond = client.sendRequest(query + ";searchArtist"); //Bích Phương;searchArtist
             String[] result = respond.split("~");
-            String trackList = result[1];
-            String imgLink = result[2];
-            displaySongData(trackList);
-            //Tu dong xuong dong neu dai qua
-            txtInfo.setLineWrap(true);
-            txtInfo.setWrapStyleWord(true);
-            this.txtInfo.setText(result[0]);
-            //Hien thi anh nghe si
-            loadImg(imgLink);
+            if (result.length > 2) {
+                String trackList = result[1];
+                String imgLink = result[2];
+                displaySongData(trackList);
+                //Tu dong xuong dong neu dai qua
+                txtInfo.setLineWrap(true);
+                txtInfo.setWrapStyleWord(true);
+                this.txtInfo.setText(result[0]);
+                //Hien thi anh nghe si
+                loadImg(imgLink);
+            }else{
+                ImageIcon imgThisImg = new ImageIcon("./src/artist.png");
+                jlbAvatar.setIcon(imgThisImg);
+                JOptionPane.showMessageDialog(rootPane, "Xin lỗi thầy nhưng mà cái ông này không có sẵn trên API :(((( ");
+            }
+
         } catch (Exception e) {
             System.out.println(e);
         }

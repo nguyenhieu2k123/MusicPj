@@ -33,43 +33,53 @@ public class server {
                 // Uppercase, sent back to client, server status test
                 if (command[1].equals("btnSearch")) {
                     JsonArray result = new JsonArray();
-                    result = song.getSongDataFromAPI(command[0]);    
-                    dpsend = new DatagramPacket(result.toString().getBytes(), result.toString().getBytes().length,dpreceive.getAddress(), dpreceive.getPort());
+                    result = song.getSongDataFromAPI(command[0]);
+                    dpsend = new DatagramPacket(result.toString().getBytes(), result.toString().getBytes().length, dpreceive.getAddress(), dpreceive.getPort());
                     System.out.println("Server sent back " + tmp + " to client");
                     socket.send(dpsend);
-                }
-                else if (command[1].equals("getChosenSong")) {
+                } else if (command[1].equals("getChosenSong")) {
                     JsonObject result = new JsonObject();
                     result = song.getLyricsDataFromAPI(command[0]);
-                    dpsend = new DatagramPacket(result.toString().getBytes(), result.toString().getBytes().length,dpreceive.getAddress(), dpreceive.getPort());
+                    dpsend = new DatagramPacket(result.toString().getBytes(), result.toString().getBytes().length, dpreceive.getAddress(), dpreceive.getPort());
                     System.out.println("Server sent back " + tmp + " to client");
                     socket.send(dpsend);
-                }else if (command[1].equals("searchArtist")) {
+                } else if (command[1].equals("searchArtist")) {
                     //Dung jwiki lay thong tin nghe si
                     String artistInf = "";
-                    artistInf += artist.getArtistsInf(command[0]);
-                     
-                     
+                    artistInf = artist.getArtistsInf(command[0]);
                     String result = "";
-                    
                     JsonArray trackResult = new JsonArray();
                     //goi API lay nghe si can tim
                     JsonObject respond = artist.getArtist(command[0]);
-                    //Id nghe si
-                    String artistId = respond.get("id").getAsString();
-                    //Link anh
-                    String imgLink = respond.get("avatar").getAsJsonObject().get("default").getAsString();
-                    trackResult = artist.getTracksOfArtist(artistId);
-                    result = artistInf + "~" +trackResult + "~" + imgLink;
-                    dpsend = new DatagramPacket(result.toString().getBytes(), result.toString().getBytes().length,dpreceive.getAddress(), dpreceive.getPort());
-                    System.out.println("Server sent back " + tmp + " to client");
-                    socket.send(dpsend);
+                    if (respond.size() != 1) {
+                        try {
+                            String artistId = respond.get("id").getAsString();
+                            if (artistId != null) {
+                                //Link anh
+                                String imgLink = respond.get("avatar").getAsJsonObject().get("default").getAsString();
+                                trackResult = artist.getTracksOfArtist(artistId);
+                                result = artistInf + "~" + trackResult + "~" + imgLink;
+                                dpsend = new DatagramPacket(result.toString().getBytes(), result.toString().getBytes().length, dpreceive.getAddress(), dpreceive.getPort());
+                                System.out.println("Server sent back " + tmp + " to client");
+                                socket.send(dpsend);
+                            }
+                        } catch (Exception e) {
+                            String error = "";
+                            dpsend = new DatagramPacket(error.getBytes(), error.getBytes().length, dpreceive.getAddress(), dpreceive.getPort());
+                            socket.send(dpsend);
+                        }
+
+                    } else {
+                        String msg = respond.get("key").getAsString();
+                        dpsend = new DatagramPacket(msg.toString().getBytes(), msg.toString().getBytes().length, dpreceive.getAddress(), dpreceive.getPort());
+                        System.out.println("Server sent back " + msg + " to client");
+                        socket.send(dpsend);
+                    }
                 }
             }
         } catch (IOException e) {
             System.err.println(e);
         }
     }
-    
 
 }

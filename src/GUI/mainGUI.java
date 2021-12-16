@@ -323,7 +323,7 @@ public class mainGUI extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(mainGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        
         JsonArray lyricsArray = lyricsResult.get("sections").getAsJsonArray().get(1).getAsJsonObject().get("text").getAsJsonArray();
         //bien s de luu loi bai hat
         String s = "";
