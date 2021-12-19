@@ -83,6 +83,11 @@ public class server {
                         System.out.println("Server sent back " + msg + " to client");
                         socket.send(dpsend);
                     }
+                }else if(command[1].equals("getUrl")){
+                    String result = song.getUrl(command[0]);
+                    dpsend = new DatagramPacket(result.getBytes(), result.getBytes().length, dpreceive.getAddress(), dpreceive.getPort());
+                    System.out.println("Server sent back " + tmp + " to client");
+                    socket.send(dpsend);
                 }
             }
         } catch (IOException e) {

@@ -10,6 +10,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import java.awt.ComponentOrientation;
+import java.awt.Desktop;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -76,6 +77,14 @@ public class mainGUI extends javax.swing.JFrame {
         Vector select = (Vector) vtData.get(index);
         String id = (String) select.get(0);
         return id;
+    }
+
+    public static void openWebpage(String urlString) {
+        try {
+            Desktop.getDesktop().browse(new URL(urlString).toURI());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 //    end
 
@@ -402,7 +411,10 @@ public class mainGUI extends javax.swing.JFrame {
 
     private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
         // TODO add your handling code here:
-        JOptionPane.showMessageDialog(rootPane, "Hihi nhóm em không làm được cái này, Thầy nhẹ tay thôi nhé thầy <3 <3 <3 ");
+        int index = tbList.getSelectedRow();
+        String url = client.sendRequest(this.songSelected(index) + ";getUrl");
+        openWebpage(url);
+        //JOptionPane.showMessageDialog(rootPane, "Hihi nhóm em không làm được cái này, Thầy nhẹ tay thôi nhé thầy <3 <3 <3 ");
     }//GEN-LAST:event_jButton3MouseClicked
 
     /**
