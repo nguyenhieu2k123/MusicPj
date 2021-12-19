@@ -3,11 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/nguyenhieu/NetBeansProjects/MusicPj/src/UDP/server.java</file>
-            <file>file:/Users/nguyenhieu/NetBeansProjects/MusicPj/src/GUI/mainGUI.java</file>
-            <file>file:/Users/nguyenhieu/NetBeansProjects/MusicPj/src/GUI/artistGUI2.java</file>
-            <file>file:/Users/nguyenhieu/NetBeansProjects/MusicPj/src/Songs/getSongs.java</file>
-            <file>file:/Users/nguyenhieu/NetBeansProjects/MusicPj/src/Artist/getArtist.java</file>
+            <file>file:/Users/Rhylaw/Documents/GitHub/MusicPj/src/Songs/getSongs.java</file>
+            <file>file:/Users/Rhylaw/Documents/GitHub/MusicPj/src/UDP1/client.java</file>
+            <file>file:/Users/Rhylaw/Documents/GitHub/MusicPj/src/Encryption/Connect.java</file>
+            <file>file:/Users/Rhylaw/Documents/GitHub/MusicPj/src/Encryption/RSA.java</file>
+            <file>file:/Users/Rhylaw/Documents/GitHub/MusicPj/src/UDP1/server.java</file>
+            <file>file:/Users/Rhylaw/Documents/GitHub/MusicPj/src/Encryption/AES.java</file>
         </group>
     </open-files>
 </project-private>
