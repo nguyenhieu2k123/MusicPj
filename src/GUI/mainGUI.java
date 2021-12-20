@@ -411,10 +411,15 @@ public class mainGUI extends javax.swing.JFrame {
 
     private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
         // TODO add your handling code here:
-        int index = tbList.getSelectedRow();
+        try {
+              int index = tbList.getSelectedRow();
         String url = client.sendRequest(this.songSelected(index) + ";getUrl");
         openWebpage(url);
-        //JOptionPane.showMessageDialog(rootPane, "Hihi nhóm em không làm được cái này, Thầy nhẹ tay thôi nhé thầy <3 <3 <3 ");
+        } catch (Exception e) {
+             JOptionPane.showMessageDialog(rootPane, "Vui lòng chọn bài hát  ");
+        }
+      
+       
     }//GEN-LAST:event_jButton3MouseClicked
 
     /**
